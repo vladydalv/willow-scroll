@@ -1,0 +1,622 @@
+/* ==========================================================================
+   Willow Scroll — admin
+   Settings page: approved mockup. Violet accent is applied through the
+   wp.components CSS variables, so native controls recolor themselves.
+   Page overrides in the editor keep the admin theme color and stay quiet.
+   ========================================================================== */
+
+body.settings_page_willow-scroll,
+body.settings_page_willow-scroll #wpcontent,
+body.settings_page_willow-scroll #wpbody-content {
+	background: #fff;
+}
+
+.ws-root {
+	--ws-accent: #7c3aed;
+	--ws-accent-hover: #6d28d9;
+	--ws-accent-soft: #f3eeff;
+	--ws-ink: #101828;
+	--ws-text: #344054;
+	--ws-muted: #5b6474;
+	--ws-line: #e4e7ec;
+	--ws-line-strong: #d0d5dd;
+	--ws-surface: #f9fafb;
+	--ws-top-h: 64px;
+
+	/* Native components pick these up: buttons, toggles, ranges, focus rings, tabs. */
+	--wp-admin-theme-color: #7c3aed;
+	--wp-admin-theme-color--rgb: 124, 58, 237;
+	--wp-admin-theme-color-darker-10: #6d28d9;
+	--wp-admin-theme-color-darker-10--rgb: 109, 40, 217;
+	--wp-admin-theme-color-darker-20: #5b21b6;
+	--wp-admin-theme-color-darker-20--rgb: 91, 33, 182;
+	--wp-components-color-accent: #7c3aed;
+	--wp-components-color-accent-darker-10: #6d28d9;
+	--wp-components-color-accent-darker-20: #5b21b6;
+}
+
+.ws-app {
+	margin: 0 0 120px;
+	color: var(--ws-text);
+	font-size: 14px;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────────────── */
+
+.ws-topbar {
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 32px);
+	z-index: 30;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	height: var(--ws-top-h);
+	box-sizing: border-box;
+	margin: -10px -20px 0 -22px;
+	padding: 0 40px;
+	background: rgba(255, 255, 255, 0.94);
+	-webkit-backdrop-filter: saturate(180%) blur(12px);
+	backdrop-filter: saturate(180%) blur(12px);
+	border-bottom: 1px solid var(--ws-line-strong);
+}
+.ws-topbar__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	color: var(--ws-ink);
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+.ws-topbar__title > span {
+	margin-left: -2px;
+	color: var(--ws-muted);
+	font-size: 12px;
+	font-weight: 500;
+}
+.ws-topbar__mark {
+	color: var(--ws-accent);
+	flex-shrink: 0;
+}
+.ws-topbar__actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.ws-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--ws-muted);
+	font-size: 13px;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+.ws-status.is-on {
+	opacity: 1;
+}
+.ws-status.is-on::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--ws-accent);
+}
+.ws-topbar .components-button {
+	height: 36px;
+	border-radius: 4px;
+	font-weight: 500;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+
+.ws-layout {
+	display: grid;
+	grid-template-columns: 208px minmax(0, 760px);
+	gap: 64px;
+	align-items: start;
+	padding: 48px 18px 0;
+}
+.ws-nav {
+	position: sticky;
+	top: calc(var(--wp-admin--admin-bar--height, 32px) + var(--ws-top-h) + 48px);
+	display: grid;
+	gap: 2px;
+}
+.ws-nav .ws-nav__item.components-button {
+	display: grid;
+	grid-template-columns: 20px 1fr;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	height: auto;
+	padding: 8px 12px;
+	border-radius: 6px;
+	color: var(--ws-text);
+	text-align: left;
+	box-shadow: none;
+	transition: background-color 0.12s ease, color 0.12s ease;
+}
+.ws-nav .ws-nav__item.components-button:hover:not(.is-active) {
+	background: var(--ws-accent-soft);
+	color: var(--ws-ink);
+}
+.ws-nav .ws-nav__item.components-button.is-active {
+	background: var(--ws-accent);
+	color: #fff;
+	box-shadow: 0 6px 16px -8px var(--ws-accent);
+}
+.ws-nav .ws-nav__item.components-button:focus-visible {
+	outline: 2px solid var(--ws-accent);
+	outline-offset: 2px;
+	box-shadow: none;
+}
+.ws-nav__icon {
+	width: 18px;
+	height: 18px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0.75;
+}
+.ws-nav__icon .is-fill {
+	fill: currentColor;
+	stroke: none;
+	opacity: 0.5;
+}
+.is-active .ws-nav__icon {
+	opacity: 1;
+}
+.ws-nav__title {
+	display: block;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.3;
+}
+.ws-nav__meta {
+	display: block;
+	margin-top: 1px;
+	color: var(--ws-muted);
+	font-size: 12px;
+	line-height: 1.4;
+}
+.is-active .ws-nav__meta {
+	color: rgba(255, 255, 255, 0.78);
+}
+.ws-main {
+	min-width: 0;
+}
+
+/* ── Page header ─────────────────────────────────────────────────────── */
+
+.ws-page-head {
+	margin-bottom: 44px;
+}
+.ws-page-head h2 {
+	margin: 0;
+	padding: 0;
+	color: var(--ws-ink);
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+.ws-page-head p {
+	max-width: 560px;
+	margin: 10px 0 0;
+	color: var(--ws-muted);
+	font-size: 15px;
+	line-height: 1.6;
+}
+
+/* ── Sections & rows ─────────────────────────────────────────────────── */
+
+.ws-section + .ws-section {
+	margin-top: 56px;
+}
+.ws-s-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 24px;
+	padding-bottom: 16px;
+}
+.ws-s-head h3 {
+	margin: 0;
+	padding: 0;
+	color: var(--ws-ink);
+	font-size: 18px;
+	font-weight: 650;
+	letter-spacing: -0.01em;
+}
+.ws-s-head p {
+	max-width: 520px;
+	margin: 4px 0 0;
+	color: var(--ws-muted);
+	font-size: 14px;
+	line-height: 1.55;
+}
+.ws-s-head .components-form-toggle {
+	flex-shrink: 0;
+	margin-top: 4px;
+}
+.ws-rows {
+	border-top: 1px solid var(--ws-line-strong);
+}
+.ws-row {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+	gap: 32px;
+	padding: 20px 0;
+	border-bottom: 1px solid var(--ws-line);
+}
+.ws-row__l {
+	padding-top: 10px;
+}
+.ws-row__t {
+	display: block;
+	color: var(--ws-ink);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.45;
+}
+.ws-row__l p {
+	margin: 4px 0 0;
+	color: var(--ws-muted);
+	font-size: 13px;
+	line-height: 1.55;
+}
+.ws-row__c {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 40px;
+}
+.ws-row__c > .components-form-toggle {
+	align-self: flex-end;
+}
+.ws-inline {
+	display: flex;
+	gap: 8px;
+}
+.ws-inline .components-base-control {
+	flex: 1;
+}
+
+/* Segmented control: selected option in the accent. */
+.ws-root .ws-seg .components-toggle-group-control-option-base[aria-checked="true"] {
+	background: var(--ws-accent);
+	color: #fff;
+	border-radius: 3px;
+}
+
+/* ── Advanced ────────────────────────────────────────────────────────── */
+
+.ws-adv {
+	padding-top: 14px;
+}
+.ws-s-head + .ws-adv {
+	border-top: 1px solid var(--ws-line-strong);
+}
+.ws-adv .ws-adv__toggle.components-button.is-link {
+	gap: 6px;
+	color: var(--ws-accent);
+	font-size: 13px;
+	font-weight: 500;
+	text-decoration: none;
+}
+.ws-adv.is-open .ws-rows {
+	margin-top: 12px;
+}
+
+/* ── Presets ─────────────────────────────────────────────────────────── */
+
+.ws-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	padding: 20px 0;
+	border-bottom: 1px solid var(--ws-line);
+}
+.ws-pills .ws-pill.components-button {
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 999px;
+	background: #fff;
+	box-shadow: inset 0 0 0 1px var(--ws-line-strong);
+	color: var(--ws-ink);
+	font-weight: 500;
+}
+.ws-pills .ws-pill.components-button:hover:not(.is-on) {
+	background: var(--ws-accent-soft);
+	box-shadow: inset 0 0 0 1px var(--ws-accent);
+	color: var(--ws-ink);
+}
+.ws-pills .ws-pill.components-button.is-on {
+	background: var(--ws-accent);
+	box-shadow: none;
+	color: #fff;
+}
+
+/* ── Snackbar ────────────────────────────────────────────────────────── */
+
+.ws-snackbars {
+	position: fixed;
+	bottom: 24px;
+	left: calc(160px + 24px);
+	z-index: 100000;
+}
+.folded .ws-snackbars {
+	left: calc(36px + 24px);
+}
+
+/* ── Color group (settings rows, page overrides) ─────────────────────── */
+
+.willow-color-group__label {
+	margin: 0 0 8px;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+.willow-color-group__list {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 6px;
+	overflow: hidden;
+}
+.ws-root .willow-color-group__list {
+	border-color: var(--ws-line-strong, #d0d5dd);
+}
+.willow-color-field {
+	display: block;
+}
+.willow-color-field + .willow-color-field {
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.ws-root .willow-color-field + .willow-color-field {
+	border-top-color: var(--ws-line, #e4e7ec);
+}
+.willow-color-field__toggle.components-button {
+	width: 100%;
+	height: 40px;
+	padding: 0 12px;
+	gap: 10px;
+	justify-content: flex-start;
+	border-radius: 0;
+	color: inherit;
+}
+.willow-color-field__toggle.components-button:hover:not(:disabled),
+.willow-color-field__toggle.components-button.is-open {
+	background: rgba(0, 0, 0, 0.03);
+	color: inherit;
+}
+.willow-color-field__toggle .component-color-indicator {
+	flex-shrink: 0;
+}
+.willow-color-field__label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.willow-color-field__content {
+	display: grid;
+	gap: 12px;
+	justify-items: start;
+	width: 260px;
+	padding: 16px;
+}
+.willow-color-field__content > .components-color-palette,
+.willow-color-field__content > div {
+	width: 100%;
+}
+
+/* ── Page / template overrides: quiet, native sidebar look ───────────── */
+
+.willow-override {
+	display: grid;
+	gap: 16px;
+}
+.willow-override__group {
+	display: grid;
+	gap: 14px;
+	padding-top: 14px;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.willow-override__title {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1e1e1e;
+}
+.willow-override__note {
+	margin: 0;
+	color: #757575;
+	font-size: 12px;
+	line-height: 1.5;
+}
+.willow-override .willow-override__reset.components-button.is-link {
+	margin-top: 6px;
+	font-size: 12px;
+}
+.willow-override .willow-logo-field__thumb {
+	width: 100%;
+	height: 56px;
+}
+.ws-template-fields {
+	padding: 20px 0;
+	border-bottom: 1px solid var(--ws-line, #e4e7ec);
+}
+.ws-template-fields .willow-override {
+	max-width: 480px;
+}
+#willow-scroll-page .inside {
+	margin-top: 12px;
+}
+
+/* ── Background field (Color / Gradient) ─────────────────────────────── */
+
+.willow-color-field__content.is-background {
+	width: 288px;
+}
+.willow-bg-tabs .components-tab-panel__tabs {
+	margin: -4px 0 12px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.willow-bg-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 4px;
+}
+.willow-bg-actions:empty {
+	display: none;
+}
+
+/* ── Logo field ──────────────────────────────────────────────────────── */
+
+.willow-logo-field {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+.willow-logo-field__thumb {
+	display: grid;
+	place-items: center;
+	width: 120px;
+	height: 64px;
+	padding: 8px;
+	border: 1px solid #d0d5dd;
+	border-radius: 8px;
+	background: repeating-conic-gradient(#f3f4f6 0 25%, #fff 0 50%) 0 0 / 12px 12px;
+	color: #5b6474;
+	font-size: 12px;
+	cursor: pointer;
+}
+.willow-logo-field__thumb.is-empty {
+	background: #f9fafb;
+	border-style: dashed;
+}
+.willow-logo-field__thumb:hover {
+	border-color: #98a2b3;
+}
+.willow-logo-field__thumb:focus-visible {
+	outline: 2px solid var(--wp-admin-theme-color, #3858e9);
+	outline-offset: 2px;
+}
+/* Hard bounds: an SVG without width/height has no intrinsic size and would
+   otherwise overflow the preview. */
+.willow-logo-field__thumb {
+	overflow: hidden;
+}
+.willow-logo-field__thumb img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-width: 0;
+	min-height: 0;
+	object-fit: contain;
+}
+.willow-logo-field__actions {
+	display: flex;
+	gap: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+	.ws-layout {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 32px;
+		padding-left: 0;
+	}
+	.ws-nav {
+		position: static;
+		grid-auto-flow: column;
+		overflow-x: auto;
+	}
+	.ws-nav .ws-nav__item.components-button {
+		white-space: nowrap;
+	}
+}
+@media (max-width: 782px) {
+	.ws-topbar {
+		position: static;
+		margin: -10px -10px 0 -12px;
+		padding: 0 16px;
+	}
+	.ws-status {
+		display: none;
+	}
+	.ws-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+	.ws-row__l {
+		padding-top: 0;
+	}
+	.ws-snackbars {
+		left: 16px;
+		right: 16px;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.ws-root *,
+	.ws-root *::before {
+		transition: none !important;
+	}
+}
+
+/* ── Header detection ────────────────────────────────────────────────── */
+
+.ws-code {
+	display: inline-block;
+	max-width: 100%;
+	padding: 4px 8px;
+	border-radius: 4px;
+	background: var(--ws-surface, #f9fafb);
+	box-shadow: inset 0 0 0 1px var(--ws-line, #e4e7ec);
+	color: var(--ws-ink, #101828);
+	font-size: 12.5px;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+}
+.ws-code-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.ws-row__c > .ws-code {
+	align-self: flex-start;
+}
+.ws-notice.components-notice {
+	margin: 16px 0 0;
+}
+.ws-s-head .components-button.is-secondary {
+	flex-shrink: 0;
+}
+
+.ws-rule-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex-shrink: 0;
+}
+
+.ws-stack {
+	display: grid;
+	gap: 16px;
+	width: 100%;
+}
+.ws-inline-action.components-button.is-link {
+	justify-self: start;
+	font-size: 13px;
+	text-decoration: none;
+}
+.ws-inline-action.components-button.is-link:hover {
+	text-decoration: underline;
+}
